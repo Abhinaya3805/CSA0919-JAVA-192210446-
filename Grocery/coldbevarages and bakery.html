@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cold Beverages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .item-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+            width: 200px;
+        }
+        .item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .cost {
+            font-weight: bold;
+            color: green;
+        }
+        .add-to-cart, .remove-from-cart {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .add-to-cart:hover, .remove-from-cart:hover {
+            background-color: #0056b3;
+        }
+        .cart {
+            margin-top: 20px;
+            background-color: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(itemName, itemCost) {
+            cart.push({ name: itemName, cost: itemCost });
+            total += itemCost;
+            displayCart();
+            alert(`${itemName} has been added to your cart.`);
+        }
+
+        function removeFromCart(index) {
+            total -= cart[index].cost;
+            cart.splice(index, 1);
+            displayCart();
+        }
+
+        function displayCart() {
+            const cartItems = document.getElementById('cartItems');
+            const totalCost = document.getElementById('totalCost');
+            cartItems.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - $${item.cost.toFixed(2)}`;
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.className = 'remove-from-cart';
+                removeButton.onclick = () => removeFromCart(index);
+
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+            });
+
+            totalCost.textContent = `Total: $${total.toFixed(2)}`;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="vegetables.html">Vegetables</a>
+            <a href="snacks.html">Snacks</a>
+            <a href="fruits.html">Fruits</a>
+        </nav>
+    </header>
+
+    <h1>Cold Beverages</h1>
+    <div class="item-container">
+        <div class="item">
+            <img src="juice.jpg" alt="Juice">
+            <h2>Juice</h2>
+            <p class="cost">$2.50</p>
+            <p>Refreshing and healthy!</p>
+            <button class="add-to-cart" onclick="addToCart('Juice', 2.50)">Add to Cart</button>
+        </div>
+        <div class="item">
+            <img src="soda.jpg" alt="Soda">
+            <h2>Soda</h2>
+            <p class="cost">$1.75</p>
+            <p>Fizzy and fun!</p>
+            <button class="add-to-cart" onclick="addToCart('Soda', 1.75)">Add to Cart</button>
+        </div>
+        <div class="item">
+            <img src="iced-coffee.jpg" alt="Iced Coffee">
+            <h2>Iced Coffee</h2>
+            <p class="cost">$3.00</p>
+            <p>Perfect for a cool refreshment!</p>
+            <button class="add-to-cart" onclick="addToCart('Iced Coffee', 3.00)">Add to Cart</button>
+        </div>
+        <div class="item">
+            <img src="iced-tea.jpg" alt="Iced Tea">
+            <h2>Iced Tea</h2>
+            <p class="cost">$2.00</p>
+            <p>Light and refreshing!</p>
+            <button class="add-to-cart" onclick="addToCart('Iced Tea', 2.00)">Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="cart">
+        <h2>Your Cart</h2>
+        <ul id="cartItems"></ul>
+        <p id="totalCost">Total: $0.00</p>
+    </div>
+
+</body>
+</html>

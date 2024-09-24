@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruits - Grocery Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px;
+            background-color: white;
+            text-align: center;
+            width: 200px;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .cart-container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Fruits</h1>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="vegetables.html">Vegetables</a>
+        <a href="snacks.html">Snacks</a>
+        <a href="cold-beverage.html">Cold Beverages</a>
+        <a href="payment.html">payment</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="product">
+        <img src="apple.jpg" alt="Apple">
+        <h3>Apple</h3>
+        <p>$1.00 each</p>
+        <button class="btn" onclick="addToCart('Apple', 1.00)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="banana.jpg" alt="Banana">
+        <h3>Banana</h3>
+        <p>$0.50 each</p>
+        <button class="btn" onclick="addToCart('Banana', 0.50)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="orange.jpg" alt="Orange">
+        <h3>Orange</h3>
+        <p>$0.80 each</p>
+        <button class="btn" onclick="addToCart('Orange', 0.80)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="grapes.jpg" alt="Grapes">
+        <h3>Grapes</h3>
+        <p>$2.50 per bunch</p>
+        <button class="btn" onclick="addToCart('Grapes', 2.50)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="strawberry.jpg" alt="Strawberry">
+        <h3>Strawberry</h3>
+        <p>$3.00 per pound</p>
+        <button class="btn" onclick="addToCart('Strawberry', 3.00)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="kiwi.jpg" alt="Kiwi">
+        <h3>Kiwi</h3>
+        <p>$1.50 each</p>
+        <button class="btn" onclick="addToCart('Kiwi', 1.50)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="pineapple.jpg" alt="Pineapple">
+        <h3>Pineapple</h3>
+        <p>$3.50 each</p>
+        <button class="btn" onclick="addToCart('Pineapple', 3.50)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="mango.jpg" alt="Mango">
+        <h3>Mango</h3>
+        <p>$1.80 each</p>
+        <button class="btn" onclick="addToCart('Mango', 1.80)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="blueberry.jpg" alt="Blueberry">
+        <h3>Blueberry</h3>
+        <p>$4.00 per pint</p>
+        <button class="btn" onclick="addToCart('Blueberry', 4.00)">Add to Cart</button>
+    </div>
+</div>
+
+<div class="cart-container">
+    <h2>Your Cart</h2>
+    <ul id="cartItems"></ul>
+    <p id="totalCost">Total: $0.00</p>
+    <button onclick="proceedToPayment()">Proceed to Payment</button>
+</div>
+
+<footer>
+    <p>&copy; 2024 Grocery Store. All rights reserved.</p>
+</footer>
+
+<script>
+    let cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+    let total = parseFloat(sessionStorage.getItem('cartTotal')) || 0;
+
+    function addToCart(item, price) {
+        cart.push({ name: item, cost: price });
+        total += price;
+        updateCartInSession();
+        displayCart();
+    }
+
+    function updateCartInSession() {
+        sessionStorage.setItem('cartItems', JSON.stringify(cart));
+        sessionStorage.setItem('cartTotal', total);
+    }
+
+    function displayCart() {
+        const cartItems = document.getElementById('cartItems');
+        const totalCost = document.getElementById('totalCost');
+        cartItems.innerHTML = '';
+
+        cart.forEach(product => {
+            const li = document.createElement('li');
+            li.textContent = `${product.name} - $${product.cost.toFixed(2)}`;
+            cartItems.appendChild(li);
+        });
+
+        totalCost.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    function proceedToPayment() {
+        window.location.href = 'payment.html';
+    }
+
+    displayCart(); // Show cart on page load
+</script>
+
+</body>
+</html>
